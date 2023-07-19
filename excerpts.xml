@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet href="/feed.xsl" type="text/xsl"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Пшерги кодинг</title>
+<subtitle>Блог разработчика. Потому что правильные вещи нужно записывать.</subtitle><link href="https://eduard-sukharev.github.io/excerpts.xml" rel="self"/>
+<link href="https://eduard-sukharev.github.io/" rel="alternate" />
+<updated>2023-07-19T00:00:00Z</updated>
+<id>https://eduard-sukharev.github.io/</id>
+<author>
+  <name>Эдуард Сухарев</name>
+  <uri>https://eduard-sukharev.github.io/</uri>
+</author><entry><title>Избегайте отрицательных условий</title>
+<link href="https://eduard-sukharev.github.io/izbegajte-otricatelnyh-uslovij/"/>
+<updated>2023-07-19T00:00:00Z</updated>
+<id>https://eduard-sukharev.github.io/izbegajte-otricatelnyh-uslovij/</id><content type="html">&lt;p&gt;Разберём на примерах известное правило избегания отрицаний в условиях. Какие бывают отрицания и чем они опасны.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://eduard-sukharev.github.io/izbegajte-otricatelnyh-uslovij/&quot;&gt;Читать далее Пшерги кодинг →&lt;/a&gt;&lt;/p&gt;</content>
+</entry></feed>
