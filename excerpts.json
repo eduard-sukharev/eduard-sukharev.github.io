@@ -1,0 +1,22 @@
+{"version": "https://jsonfeed.org/version/1.1",
+"title": "Пшерги кодинг",
+"home_page_url": "https://eduard-sukharev.github.io/",
+"feed_url": "https://eduard-sukharev.github.io/excerpts.json",
+"description": "Блог разработчика. Потому что правильные вещи нужно записывать.",
+"user_comment": "Пшерги кодинг JSON feed (full articles)",
+"authors": [
+  {
+    "name": "Эдуард Сухарев",
+    "url": "https://eduard-sukharev.github.io/"
+  }
+],
+"language": "ru",
+"icon" : "https://eduard-sukharev.github.io/icon-192.png",
+"favicon" : "https://eduard-sukharev.github.io/icon-512.png","items": [{"id": "https://eduard-sukharev.github.io/izbegajte-otricatelnyh-uslovij/",
+"url": "https://eduard-sukharev.github.io/izbegajte-otricatelnyh-uslovij/",
+"title": "Избегайте отрицательных условий",
+"date_published": "2023-07-19T00:00:00Z",
+"language": "","content_html": "&lt;p&gt;Разберём на примерах известное правило избегания отрицаний в условиях. Какие бывают отрицания и чем они опасны.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://eduard-sukharev.github.io/izbegajte-otricatelnyh-uslovij/&quot;&gt;Читать далее Пшерги кодинг →&lt;/a&gt;&lt;/p&gt;"
+    }
+  ]
+}
