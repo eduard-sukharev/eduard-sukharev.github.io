@@ -1,4 +1,0 @@
-User-agent: *
-Disallow:
-
-Sitemap: https://eduard-sukharev.github.io/sitemap.xml
