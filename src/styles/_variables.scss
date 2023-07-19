@@ -1,14 +1,12 @@
 // Base values
 
-$baseSize: 16px;
+$baseSize: 24px;
 
 // Base colors
 
-$baseHue: 210;
-
-$baseColor: hsl($baseHue, 80%, 50%);
-$white: hsl($baseHue, 80%, 98%);
-$black: hsl($baseHue, 5%, 10%);
+$baseColor: hsla(197, 98%, 38%, 1);
+$white: hsla(233, 29%, 12%, 1);
+$black: hsla(170, 30%, 96%, 1);
 
 // Fonts
 
@@ -120,8 +118,8 @@ html:not(.dark) {
 // Dark mode colors
 
 $darkBackgroundColor: $black;
-$darkTextColor: hsl($baseHue, 5%, 70%);
-$darkLinkColor: hsl($baseHue, 60%, 75%);
+$darkTextColor: $white;
+$darkLinkColor: $baseColor;
 $darkLinkHoverColor: darken($darkLinkColor, 10%);
 $darkPostMetaColor: $darkTextColor;
 $darkTopMetaColor: darken($darkTextColor, 10%);

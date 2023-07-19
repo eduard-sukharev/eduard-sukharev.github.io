@@ -1,6 +1,6 @@
 {
   "layout": "post",
-  "description": "{{ content|truncate(160) }}",
+  "description": "{{ content }}",
   "tags": ["post"],
   "permalink": "{% if customPermalink %}{{ customPermalink }}{% else %}/{{ title | slugify }}/{% endif %}",
   "language": "en",

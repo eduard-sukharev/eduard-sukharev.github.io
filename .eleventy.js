@@ -12,7 +12,6 @@ const {
 
 module.exports = function (eleventyConfig) {
   // --- Initial config
-
   initialSetup(eleventyConfig);
 
   // --- Layout aliases
