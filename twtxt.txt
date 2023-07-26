@@ -16,3 +16,4 @@
 # lang        = en
 #
 2023-07-19T00:00:00Z	Избегайте отрицательных условий - https://eduard-sukharev.github.io/izbegajte-otricatelnyh-uslovij/
+2023-07-26T00:00:00Z	Объявляйте классы final по-умолчанию - https://eduard-sukharev.github.io/obuyavlyajte-klassy-final-po-umolchaniyu/

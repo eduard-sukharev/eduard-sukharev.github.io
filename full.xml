@@ -3,12 +3,63 @@
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Пшерги кодинг</title>
 <subtitle>Блог разработчика. Потому что правильные вещи нужно записывать.</subtitle><link href="https://eduard-sukharev.github.io/full.xml" rel="self"/>
 <link href="https://eduard-sukharev.github.io/" rel="alternate" />
-<updated>2023-07-19T00:00:00Z</updated>
+<updated>2023-07-26T00:00:00Z</updated>
 <id>https://eduard-sukharev.github.io/</id>
 <author>
   <name>Эдуард Сухарев</name>
   <uri>https://eduard-sukharev.github.io/</uri>
-</author><entry><title>Избегайте отрицательных условий</title>
+</author><entry><title>Объявляйте классы final по-умолчанию</title>
+<link href="https://eduard-sukharev.github.io/obuyavlyajte-klassy-final-po-umolchaniyu/"/>
+<updated>2023-07-26T00:00:00Z</updated>
+<id>https://eduard-sukharev.github.io/obuyavlyajte-klassy-final-po-umolchaniyu/</id><content type="html">&lt;p&gt;Ключевое слово &lt;code&gt;final&lt;/code&gt; появилось в PHP вместе с понятием классов, однако зачастую им пренебрегают.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;TL;DR: Всегда объявляйте класс как &lt;code&gt;final&lt;/code&gt;, если все его публичные методы являются реализацией интерфейсов класса.&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&quot;princip-open-closed&quot;&gt;Принцип Open-closed&lt;/h2&gt;
+&lt;p&gt;Вспомним принцип Open-Closed из аббревиатуры SOLID:&lt;/p&gt;
+&lt;p&gt;Программные сущности (классы, модули, функции и т. п.) должны быть открыты для расширения, но закрыты для изменения&lt;/p&gt;
+&lt;p&gt;Закрытость для изменения в этом контексте означает что когда ваш код предоставляет какой-то интерфейс, этот интерфейс не должен меняться. В конце концов API это контракт, это обещание совместимости, это ответственность. Это не означает что реализация не может меняться — как раз наоборот!&lt;/p&gt;
+&lt;p&gt;Однако “открытость к расширению” не означает “открытость к наследованию”. Композиция, Стратегия, EventListener, обратные вызовы - всё это рабочие способы расширять поведение без использования наследования, которые чаще всего ещё и более предпочтительны. Часто наследование делает код только более сложным и менее гибким.&lt;/p&gt;
+&lt;h2 id=&quot;nasledovanie-vs-interfejsy&quot;&gt;Наследование vs Интерфейсы&lt;/h2&gt;
+&lt;p&gt;Если ваш класс изначально не подразумевает наследование, то стоит сразу объявить его &lt;code&gt;final&lt;/code&gt;. Но как понять что наследование не потребуется в дальнейшем?&lt;/p&gt;
+&lt;p&gt;Исходя из принципа “программировать на уровне интерфейсов, а не реализаций” следует сразу принять что либо наш класс изначально пишется как конечная реализация набора интерейсов, либо представляет собой интерфейс с частичной реализацией логики, т.е. является абстрактным классом.&lt;/p&gt;
+&lt;p&gt;Само определение абстрактного класса подразумевает что его будут наследовать, &lt;code&gt;final&lt;/code&gt; здесь точно неприменим.&lt;/p&gt;
+&lt;p&gt;Класс, реализующий интерфейс же может иметь наследников, однако таковые либо полностью заново реализуют всё тот же интерфейс, а значит наследование здесь лишнее, либо общие элементы реализации просятся в абстрактный класс.&lt;/p&gt;
+&lt;p&gt;Таким образом получается что если ваш класс реализует интерфейс, то вполне уместно сразу же объявить его &lt;code&gt;final&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;problemy-s-testirovaniem&quot;&gt;Проблемы с тестированием&lt;/h2&gt;
+&lt;p&gt;Тестовые фреймворки полагаются на возможность наследования классов для создания моков и заглушек. Как с этим быть?&lt;/p&gt;
+&lt;p&gt;Можно конечно вместо объявления класса как &lt;code&gt;final&lt;/code&gt; добавить ему аннотацию (или phpdoc) &lt;code&gt;@internal&lt;/code&gt; что пометит класс, как часть внутренней реализации и хотя технически его всё ещё можно будет наследовать, мы явно объявим о своей интенции и сделаем вид что всё хорошо.&lt;/p&gt;
+&lt;p&gt;Но есть способ лучше - покрыть все публичные методы такого класса соответствующим набором интерфейсов. В таком случае наш код будет работать с абстракциями, в то время как тесты смогут сгенерировать на основе интерфейсов необходимые заглушки.&lt;/p&gt;
+&lt;h2 id=&quot;pochemu-final-eto-horosho&quot;&gt;Почему &lt;code&gt;final&lt;/code&gt; это хорошо&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Предотвращает формирования адских цепочек наследования вида &lt;code&gt;MailDeliveryBot&lt;/code&gt; → &lt;code&gt;Bot&lt;/code&gt; → &lt;code&gt;Admin&lt;/code&gt; → &lt;code&gt;User&lt;/code&gt; → &lt;code&gt;Core&lt;/code&gt; → &lt;code&gt;Db&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Подталкивает к использованию композиции. Скорее всего вам не нужно наследование при работе с этим классом, если изначально он не планировался как абстрактный класс.&lt;/li&gt;
+&lt;li&gt;Заставляет продумывать API библиотек и решений. Наследование нарушает инкапсуляцию. Если класс явно не создавался под наследование, то можно получить проблемы с совместимостью. Трижды думайте перед тем как использовать &lt;code&gt;extends&lt;/code&gt; и используйте &lt;code&gt;final&lt;/code&gt; чтобы не заставлять других ломать голову.&lt;/li&gt;
+&lt;li&gt;Подталкивает к сужению публичного API классов&lt;/li&gt;
+&lt;li&gt;При необходимости &lt;code&gt;final&lt;/code&gt; можно убрать, но придётся привести веские доводы и принять это решение явно&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;v-kakih-sluchayah-primenyat-final&quot;&gt;В каких случаях применять &lt;code&gt;final&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;Классы объявленные как &lt;code&gt;final&lt;/code&gt; эффективно работают только в при соблюдении следующих условий:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Класс, объявленный &lt;code&gt;final&lt;/code&gt; реализует некоторый набор интерфейсов&lt;/li&gt;
+&lt;li&gt;Все публичные методы класса покрыты этими интерфейсами&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Если хотя бы один из пунктов отсутствует, то это явный признак того, что ваш код не в полной мере полагается на абстракции, а значит рано или поздно вы можете прийти к решению через наследование. В таком случае лучше сделать шаг назад и, взглянув на холст вашего проекта целиком, придумать как решить проблему с помощью введения соответствующих абстракций.&lt;/p&gt;
+&lt;h2 id=&quot;bonus&quot;&gt;Бонус&lt;/h2&gt;
+&lt;p&gt;Шаблон для создания PHP классов в PhpStorm:&lt;/p&gt;
+&lt;pre class=&quot;language-php&quot;&gt;&lt;code class=&quot;language-php&quot;&gt;&lt;span class=&quot;token php language-php&quot;&gt;&lt;span class=&quot;token delimiter important&quot;&gt;&amp;lt;?php&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;declare&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;strict_types&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;token comment&quot;&gt;#if (${NAMESPACE})&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;token variable&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;NAMESPACE&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;token comment&quot;&gt;#end&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token variable&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;NAME&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+</content>
+</entry><entry><title>Избегайте отрицательных условий</title>
 <link href="https://eduard-sukharev.github.io/izbegajte-otricatelnyh-uslovij/"/>
 <updated>2023-07-19T00:00:00Z</updated>
 <id>https://eduard-sukharev.github.io/izbegajte-otricatelnyh-uslovij/</id><content type="html">&lt;p&gt;Разберём на примерах известное правило избегания отрицаний в условиях. Какие бывают отрицания и чем они опасны.&lt;/p&gt;

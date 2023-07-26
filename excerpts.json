@@ -12,7 +12,12 @@
 ],
 "language": "ru",
 "icon" : "https://eduard-sukharev.github.io/icon-192.png",
-"favicon" : "https://eduard-sukharev.github.io/icon-512.png","items": [{"id": "https://eduard-sukharev.github.io/izbegajte-otricatelnyh-uslovij/",
+"favicon" : "https://eduard-sukharev.github.io/icon-512.png","items": [{"id": "https://eduard-sukharev.github.io/obuyavlyajte-klassy-final-po-umolchaniyu/",
+"url": "https://eduard-sukharev.github.io/obuyavlyajte-klassy-final-po-umolchaniyu/",
+"title": "Объявляйте классы final по-умолчанию",
+"date_published": "2023-07-26T00:00:00Z",
+"language": "","content_html": "&lt;p&gt;Ключевое слово final появилось в PHP вместе с понятием классов, однако зачастую им пренебрегают.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://eduard-sukharev.github.io/obuyavlyajte-klassy-final-po-umolchaniyu/&quot;&gt;Читать далее Пшерги кодинг →&lt;/a&gt;&lt;/p&gt;"
+    },{"id": "https://eduard-sukharev.github.io/izbegajte-otricatelnyh-uslovij/",
 "url": "https://eduard-sukharev.github.io/izbegajte-otricatelnyh-uslovij/",
 "title": "Избегайте отрицательных условий",
 "date_published": "2023-07-19T00:00:00Z",
