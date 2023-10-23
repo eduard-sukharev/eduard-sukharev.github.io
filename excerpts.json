@@ -12,7 +12,12 @@
 ],
 "language": "ru",
 "icon" : "https://eduard-sukharev.github.io/icon-192.png",
-"favicon" : "https://eduard-sukharev.github.io/icon-512.png","items": [{"id": "https://eduard-sukharev.github.io/obuyavlyajte-klassy-final-po-umolchaniyu/",
+"favicon" : "https://eduard-sukharev.github.io/icon-512.png","items": [{"id": "https://eduard-sukharev.github.io/php-rector-i-kak-on-vam-ne-pomozhet/",
+"url": "https://eduard-sukharev.github.io/php-rector-i-kak-on-vam-ne-pomozhet/",
+"title": "PHP Rector и как он вам [не] поможет",
+"date_published": "2023-10-23T00:00:00Z",
+"language": "","content_html": "&lt;p&gt;Все, кто планировал переход на новые версии PHP слышали о проекте Rector для автоматизации рефакторинга и адаптации новых фич. Каждый кто завершал такой переход может рассказать пачку историй о том как и когда всё пошло не по плану.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://eduard-sukharev.github.io/php-rector-i-kak-on-vam-ne-pomozhet/&quot;&gt;Читать далее Пшерги кодинг →&lt;/a&gt;&lt;/p&gt;"
+    },{"id": "https://eduard-sukharev.github.io/obuyavlyajte-klassy-final-po-umolchaniyu/",
 "url": "https://eduard-sukharev.github.io/obuyavlyajte-klassy-final-po-umolchaniyu/",
 "title": "Объявляйте классы final по-умолчанию",
 "date_published": "2023-07-26T00:00:00Z",

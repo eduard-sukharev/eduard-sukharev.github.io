@@ -17,3 +17,4 @@
 #
 2023-07-19T00:00:00Z	Избегайте отрицательных условий - https://eduard-sukharev.github.io/izbegajte-otricatelnyh-uslovij/
 2023-07-26T00:00:00Z	Объявляйте классы final по-умолчанию - https://eduard-sukharev.github.io/obuyavlyajte-klassy-final-po-umolchaniyu/
+2023-10-23T00:00:00Z	PHP Rector и как он вам [не] поможет - https://eduard-sukharev.github.io/php-rector-i-kak-on-vam-ne-pomozhet/

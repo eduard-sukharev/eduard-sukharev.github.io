@@ -3,12 +3,51 @@
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Пшерги кодинг</title>
 <subtitle>Блог разработчика. Потому что правильные вещи нужно записывать.</subtitle><link href="https://eduard-sukharev.github.io/full.xml" rel="self"/>
 <link href="https://eduard-sukharev.github.io/" rel="alternate" />
-<updated>2023-07-26T00:00:00Z</updated>
+<updated>2023-10-23T00:00:00Z</updated>
 <id>https://eduard-sukharev.github.io/</id>
 <author>
   <name>Эдуард Сухарев</name>
   <uri>https://eduard-sukharev.github.io/</uri>
-</author><entry><title>Объявляйте классы final по-умолчанию</title>
+</author><entry><title>PHP Rector и как он вам [не] поможет</title>
+<link href="https://eduard-sukharev.github.io/php-rector-i-kak-on-vam-ne-pomozhet/"/>
+<updated>2023-10-23T00:00:00Z</updated>
+<id>https://eduard-sukharev.github.io/php-rector-i-kak-on-vam-ne-pomozhet/</id><content type="html">&lt;p&gt;Все, кто планировал переход на новые версии PHP слышали о проекте Rector для автоматизации рефакторинга и адаптации новых фич. Каждый кто завершал такой переход может рассказать пачку историй о том как и когда всё пошло не по плану.&lt;/p&gt;
+&lt;h2 id=&quot;chto-takoe-rector&quot;&gt;Что такое Rector&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://getrector.com/&quot;&gt;Rector&lt;/a&gt; это инструмент автоматизации рефакторинга и апгрейда кодовой базы. Он поможет с базовыми вещами вроде добавления тайп-хинтов и конвертацией PhpDoc в аттрибуты. Более того, типичные сценарии объединены в наборы правил: например набор Php52 для миграции на PHP 5.2 содержит сразу два правила: ContinueToBreakInSwitchRector и VarToPublicPropertyRector, которые заменят &lt;code&gt;continue&lt;/code&gt; на &lt;code&gt;break&lt;/code&gt; в switch-конструкциях и заменят ключевое слово &lt;code&gt;var&lt;/code&gt; на &lt;code&gt;public&lt;/code&gt; в объявлении полей класса, соответственно. Удобно!&lt;/p&gt;
+&lt;h2 id=&quot;v-chyom-podvoh&quot;&gt;В чём подвох?&lt;/h2&gt;
+&lt;p&gt;Давайте рассмотрим типичный пример апгрейда PHP между мажорными версиями - ведь именно это опаснее всего и именно в таких случаях мы хотим подстелить соломку. К примеру, пусть мы хотим обновить наш страшный legacy проект с PHP 5.6 на PHP 7.0. Смотрим на несовместимые изменения в &lt;a href=&quot;https://www.php.net/manual/en/migration70.incompatible.php&quot;&gt;PHP 7.0&lt;/a&gt; и видим среди прочих:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Negative bitshifts теперь бросают эксепшен, однако в Rector нет правил на то, чтобы детектить такие случаи&lt;/li&gt;
+&lt;li&gt;Удалены все ext/mysql и ext/mssql функции - Rector также не подсветит вам что вы их испльзуете&lt;/li&gt;
+&lt;li&gt;Функции &lt;code&gt;set_socket_blocking&lt;/code&gt; и &lt;code&gt;set_magic_quotes_runtime&lt;/code&gt; (с алиасом &lt;code&gt;magic_quotes_runtime&lt;/code&gt;) удалены - не обнаруживается Rector&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;и др.&lt;/p&gt;
+&lt;h2 id=&quot;chto-lishnego-v-rector&quot;&gt;Что лишнего в Rector?&lt;/h2&gt;
+&lt;p&gt;В то же самое время в наборе правил Rector для Php70 есть следующие штуки:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Использование &lt;code&gt;&amp;lt;=&amp;gt;&lt;/code&gt; вместо тернарных операторов&lt;/li&gt;
+&lt;li&gt;Замена if/else и тернарных операторов на оператор &lt;code&gt;&amp;lt;=&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Замена if+isset и тернарных операторов на &lt;code&gt;??&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Замена вложенных вызовов &lt;code&gt;dirname()&lt;/code&gt; на один с указанием глубины&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Хорошие правила, полезные, но не первой необходимости. Такие правки увеличивают и без этого потенциально крупное изменение в коде, усложняя процесс ревью. В целом отлично когда вы рутинно апгрейдитесь с одной версии пакета на другую или между минорными версиями языка.
+Для случаев когда вы просто хотите чтобы при апгрейде ничего не сломалось, нужен более лаконичный набор правил.&lt;/p&gt;
+&lt;h2 id=&quot;kakie-est-alternativy&quot;&gt;Какие есть альтернативы?&lt;/h2&gt;
+&lt;p&gt;А в общем-то альтернативы не то чтобы есть. &lt;a href=&quot;https://packagist.org/packages/phpstan/phpstan&quot;&gt;phpstan&lt;/a&gt; и &lt;a href=&quot;https://packagist.org/packages/vimeo/psalm&quot;&gt;psalm&lt;/a&gt; могут помочь привести в порядок кодовую базу в соответствии с наборами правил, однако точно так же базовые наборы обычно слишком широки и вносят слишком много лишних изменений.&lt;/p&gt;
+&lt;p&gt;Важный урок, который я вынес из общения с этими инструментами: эти инструменты не сделают волшебно, бесшовно и безболезненно.&lt;/p&gt;
+&lt;p&gt;Некоторые автоматизированные правки могут прикрыть вам тыл, тогда как другие внесут ошибки &lt;a href=&quot;https://www.php.net/manual/ru/language.oop5.variance.php&quot;&gt;ковариантности и контравариантности&lt;/a&gt; в наследовании. Такие ошибки интерпретатор отловит при первой же попытке запустить проект, но что если ошибки могут проявиться только в райнтайме?
+Например, добавленный &lt;code&gt;declare(strict_types=1);&lt;/code&gt; сделает ваш код более строгим и там где раньше срабатывало приведение типов, теперь появится ошибка!&lt;/p&gt;
+&lt;h2 id=&quot;tak-chto-delat-to&quot;&gt;Так что делать-то?&lt;/h2&gt;
+&lt;p&gt;В конечном итоге мы хотим без ошибок выкатить в продакшен код на новой версии языка.&lt;/p&gt;
+&lt;p&gt;Это означает что мы хотим как можно больше ошибо найти на ранних стадиях перехода - чем раньше, тем лучше, тем дешевле. Так что самое очевидное - &lt;strong&gt;обложитесь тестами&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Если тестами обкладываться сложно, долго и дорого (потому что у вас legacy) - найдите ключевой функционал и покройте тестами хотя бы его. Вероятно чтобы покрыть его тестами вам будет нужно сначала вручную &lt;strong&gt;критические части кода хорошенько отрефакторить&lt;/strong&gt; и например уложить в классы с полноценным внедрением зависимостей, вынесением низкоуровневой работы с БД или сетью в отдельные классы, внедрением работы с интерфейсами и абстракцией вместо конкретных реализаций, и в целом обмазывании себя типизацией со всех сторон.&lt;/p&gt;
+&lt;p&gt;И все проблемы автоматических инструментов сводятся к тому что они могут быть лишь настолько умными, насколько это возможно. Если ваша функция работы с БД принимает аргумент &lt;code&gt;$ref&lt;/code&gt; типа &lt;code&gt;int[]|string[]|false|null|mixed&lt;/code&gt;, то поможет вам только собственный опыт в том как этот клубок распутать и что делать дальше, потому что применение автоматизации здесь совершенно невозможно.&lt;/p&gt;
+&lt;h2 id=&quot;v-zaklyuchenie&quot;&gt;В заключение&lt;/h2&gt;
+&lt;p&gt;Может показаться что я утверждаю что такие инструменты как Rector, psalm и phpstan не нужны, однако это совершенно не так. Я лишь подсвечиваю тот момент, которому не всегда деляют много внимания в диферамбах о том, как быстро и легко обновить весь проект с егозависимостями.&lt;/p&gt;
+&lt;p&gt;Будьте готовы к тому что инструменты сделают хуже или привнесут неочевидные ошибки, однако эти же инструменты помогут найти самые проблемные участки кода, за которые уже придётся взяться вручную.&lt;/p&gt;
+&lt;p&gt;Успешного вам обновления.&lt;/p&gt;
+</content>
+</entry><entry><title>Объявляйте классы final по-умолчанию</title>
 <link href="https://eduard-sukharev.github.io/obuyavlyajte-klassy-final-po-umolchaniyu/"/>
 <updated>2023-07-26T00:00:00Z</updated>
 <id>https://eduard-sukharev.github.io/obuyavlyajte-klassy-final-po-umolchaniyu/</id><content type="html">&lt;p&gt;Ключевое слово &lt;code&gt;final&lt;/code&gt; появилось в PHP вместе с понятием классов, однако зачастую им пренебрегают.&lt;/p&gt;

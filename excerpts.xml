@@ -3,12 +3,16 @@
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Пшерги кодинг</title>
 <subtitle>Блог разработчика. Потому что правильные вещи нужно записывать.</subtitle><link href="https://eduard-sukharev.github.io/excerpts.xml" rel="self"/>
 <link href="https://eduard-sukharev.github.io/" rel="alternate" />
-<updated>2023-07-26T00:00:00Z</updated>
+<updated>2023-10-23T00:00:00Z</updated>
 <id>https://eduard-sukharev.github.io/</id>
 <author>
   <name>Эдуард Сухарев</name>
   <uri>https://eduard-sukharev.github.io/</uri>
-</author><entry><title>Объявляйте классы final по-умолчанию</title>
+</author><entry><title>PHP Rector и как он вам [не] поможет</title>
+<link href="https://eduard-sukharev.github.io/php-rector-i-kak-on-vam-ne-pomozhet/"/>
+<updated>2023-10-23T00:00:00Z</updated>
+<id>https://eduard-sukharev.github.io/php-rector-i-kak-on-vam-ne-pomozhet/</id><content type="html">&lt;p&gt;Все, кто планировал переход на новые версии PHP слышали о проекте Rector для автоматизации рефакторинга и адаптации новых фич. Каждый кто завершал такой переход может рассказать пачку историй о том как и когда всё пошло не по плану.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://eduard-sukharev.github.io/php-rector-i-kak-on-vam-ne-pomozhet/&quot;&gt;Читать далее Пшерги кодинг →&lt;/a&gt;&lt;/p&gt;</content>
+</entry><entry><title>Объявляйте классы final по-умолчанию</title>
 <link href="https://eduard-sukharev.github.io/obuyavlyajte-klassy-final-po-umolchaniyu/"/>
 <updated>2023-07-26T00:00:00Z</updated>
 <id>https://eduard-sukharev.github.io/obuyavlyajte-klassy-final-po-umolchaniyu/</id><content type="html">&lt;p&gt;Ключевое слово final появилось в PHP вместе с понятием классов, однако зачастую им пренебрегают.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://eduard-sukharev.github.io/obuyavlyajte-klassy-final-po-umolchaniyu/&quot;&gt;Читать далее Пшерги кодинг →&lt;/a&gt;&lt;/p&gt;</content>
