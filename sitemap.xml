@@ -13,19 +13,26 @@
     <loc>https://eduard-sukharev.github.io/rss/</loc>
   </url>
   <url>
-    <loc>https://eduard-sukharev.github.io/izbegajte-otricatelnyh-uslovij/</loc>
-  </url>
-  <url>
     <loc>https://eduard-sukharev.github.io/obuyavlyajte-klassy-final-po-umolchaniyu/</loc>
   </url>
   <url>
+    <loc>https://eduard-sukharev.github.io/izbegajte-otricatelnyh-uslovij/</loc>
+  </url>
+  <url>
+    <loc>https://eduard-sukharev.github.io/tip-integer-v-kolonke-id-kak-bomba-zamedlennogo-dejstviya/</loc>
+  </url>
+  <url>
     <loc>https://eduard-sukharev.github.io/php-rector-i-kak-on-vam-ne-pomozhet/</loc>
+  </url><url>
+    <loc>https://eduard-sukharev.github.io/tag/alerting/</loc>
   </url><url>
     <loc>https://eduard-sukharev.github.io/tag/instrumenty/</loc>
   </url><url>
     <loc>https://eduard-sukharev.github.io/tag/refaktoring/</loc>
   </url><url>
     <loc>https://eduard-sukharev.github.io/tag/chistyj-kod/</loc>
+  </url><url>
+    <loc>https://eduard-sukharev.github.io/tag/bad-practices/</loc>
   </url><url>
     <loc>https://eduard-sukharev.github.io/tag/best-practices/</loc>
   </url></urlset>

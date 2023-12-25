@@ -12,7 +12,12 @@
 ],
 "language": "ru",
 "icon" : "https://eduard-sukharev.github.io/icon-192.png",
-"favicon" : "https://eduard-sukharev.github.io/icon-512.png","items": [{"id": "https://eduard-sukharev.github.io/php-rector-i-kak-on-vam-ne-pomozhet/",
+"favicon" : "https://eduard-sukharev.github.io/icon-512.png","items": [{"id": "https://eduard-sukharev.github.io/tip-integer-v-kolonke-id-kak-bomba-zamedlennogo-dejstviya/",
+"url": "https://eduard-sukharev.github.io/tip-integer-v-kolonke-id-kak-bomba-zamedlennogo-dejstviya/",
+"title": "Тип integer в колонке id как бомба замедленного действия",
+"date_published": "2023-12-25T00:00:00Z",
+"language": "","content_html": "&lt;p&gt;Если вы работаете с Legacy проектом, то загляните в структуру ваших таблиц - возможно некоторые из них используют integer в качестве id поля, и это очень плохо.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://eduard-sukharev.github.io/tip-integer-v-kolonke-id-kak-bomba-zamedlennogo-dejstviya/&quot;&gt;Читать далее Пшерги кодинг →&lt;/a&gt;&lt;/p&gt;"
+    },{"id": "https://eduard-sukharev.github.io/php-rector-i-kak-on-vam-ne-pomozhet/",
 "url": "https://eduard-sukharev.github.io/php-rector-i-kak-on-vam-ne-pomozhet/",
 "title": "PHP Rector и как он вам [не] поможет",
 "date_published": "2023-10-23T00:00:00Z",

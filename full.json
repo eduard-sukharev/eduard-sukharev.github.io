@@ -12,7 +12,51 @@
 ],
 "language": "ru",
 "icon" : "https://eduard-sukharev.github.io/icon-192.png",
-"favicon" : "https://eduard-sukharev.github.io/icon-512.png","items": [{"id": "https://eduard-sukharev.github.io/php-rector-i-kak-on-vam-ne-pomozhet/",
+"favicon" : "https://eduard-sukharev.github.io/icon-512.png","items": [{"id": "https://eduard-sukharev.github.io/tip-integer-v-kolonke-id-kak-bomba-zamedlennogo-dejstviya/",
+"url": "https://eduard-sukharev.github.io/tip-integer-v-kolonke-id-kak-bomba-zamedlennogo-dejstviya/",
+"title": "Тип integer в колонке id как бомба замедленного действия",
+"date_published": "2023-12-25T00:00:00Z",
+"language": "","content_html": "&lt;p&gt;Если вы работаете с Legacy проектом, то загляните в структуру ваших таблиц - возможно некоторые из них используют integer в качестве id поля, и это очень плохо.&lt;/p&gt;
+&lt;h2 id=&quot;v-chyom-problema&quot;&gt;В чём проблема&lt;/h2&gt;
+&lt;p&gt;Тип integer имеет лимиты от -2147483648 до +2147483647 (от 1 до 2147483647 для serial) в PostgresQL. К этому лимиту довольно легко подойти, особенно если система была создана уже значительно время назад.&lt;/p&gt;
+&lt;p&gt;Особенность этой проблемы:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;она не будет тригериться деплоем или другими действиями с кодом&lt;/li&gt;
+&lt;li&gt;она не проявится от аномальной нагрузки&lt;/li&gt;
+&lt;li&gt;может затронуть очень разный функционал&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;kak-proverit&quot;&gt;Как проверить&lt;/h2&gt;
+&lt;p&gt;Если у вас небольшой проект и таблиц немного, то можно руками и глазами проверить каждую таблицу. Однако это плохо масштабируется.&lt;/p&gt;
+&lt;p&gt;Можно проверить размерность всех id колонок во всех таблицах, однако в разное время даже в одном проекте могут использоваться разные конвенции именования, поэтому часть таблиц могут иметь колонки вроде &lt;code&gt;product_id&lt;/code&gt; или &lt;code&gt;rid&lt;/code&gt; и т.п.&lt;/p&gt;
+&lt;p&gt;Ещё один более масштабируемый вариант - проверить текущие значения в последовательностях используемых для автоинкрементных колонок. Для этого подойдёт такой запрос:&lt;/p&gt;
+&lt;pre class=&quot;language-PostgresQL&quot;&gt;&lt;code class=&quot;language-PostgresQL&quot;&gt;SELECT c.relname, nextval(c.relname::regclass) AS seq_val
+FROM pg_class c
+WHERE c.relkind = &#39;S&#39;
+  AND  nextval(c.relname::regclass) &gt; 1000000000
+ORDER BY seq_val desc;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;В результате получим список последовательностей превысивших 1 млрд., отсортированных по убывающей. Верхний лимит integer как мы помним больше 2 млрд. поэтому значение в 1 млрд. выглядит как то, с чего стоит начать в первую очередь. По названию sequence можно довольно легко определить какая таблица её использует.&lt;/p&gt;
+&lt;p&gt;Не забываем про таблицы ссылающиеся на изменённые id в качестве внешних ключей для связи многие-к-одному или многие-ко-многим. Если foreign key constraint прописаны для таких таблиц, то их можно найти следующим запросом (здесь мы ищем внешние ключи ссылающиеся на &lt;code&gt;my_table_name(id)&lt;/code&gt;):&lt;/p&gt;
+&lt;pre class=&quot;language-PostgresQL&quot;&gt;&lt;code class=&quot;language-PostgresQL&quot;&gt;SELECT la.attrelid::regclass AS referencing_table,
+       la.attname AS referencing_column
+FROM pg_constraint AS c
+         JOIN pg_index AS i
+              ON i.indexrelid = c.conindid
+         JOIN pg_attribute AS la
+              ON la.attrelid = c.conrelid
+                  AND la.attnum = c.conkey[1]
+         JOIN pg_attribute AS ra
+              ON ra.attrelid = c.confrelid
+                  AND ra.attnum = c.confkey[1]
+WHERE c.confrelid = &#39;my_table_name&#39;::regclass
+  AND c.contype = &#39;f&#39;
+  AND ra.attname = &#39;id&#39;
+  AND cardinality(c.confkey) = 1;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Однако foreign key constraint есть не всегда (а порой его создание может быть вообще невозможным), поэтому стоит принять это во внимание - на этом автоматизация заканчивается и дальше придётся проверять руками и глазами.&lt;/p&gt;
+&lt;h2 id=&quot;na-chto-zamenit&quot;&gt;На что заменить&lt;/h2&gt;
+&lt;p&gt;Простым решением для текущего состояния будет перевести тип колонки из int в bigint - запаса прочности этого типа данных должно хватить.&lt;/p&gt;
+&lt;p&gt;Однако не стоит считать что bigint это серебряная пуля при выборе типа id колонки в новых таблицах - всё конечно же будет зависеть от ваших сценариев использования и предназначения таблицы, так что ответ здесь как всегда - it depends.&lt;/p&gt;
+"
+    },{"id": "https://eduard-sukharev.github.io/php-rector-i-kak-on-vam-ne-pomozhet/",
 "url": "https://eduard-sukharev.github.io/php-rector-i-kak-on-vam-ne-pomozhet/",
 "title": "PHP Rector и как он вам [не] поможет",
 "date_published": "2023-10-23T00:00:00Z",

@@ -3,15 +3,15 @@
   <head>
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PHP Rector и как он вам [не] поможет - Пшерги кодинг</title>
-<meta property="og:title" content="PHP Rector и как он вам [не] поможет - Пшерги кодинг">
+<title>Тип integer в колонке id как бомба замедленного действия - Пшерги кодинг</title>
+<meta property="og:title" content="Тип integer в колонке id как бомба замедленного действия - Пшерги кодинг">
 <link rel="stylesheet" href="/css/style.css?v=1703503342">
 <script src="/js/scripts.js?v=1703503342"></script>
 <script>
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('/service-worker.js');
 </script>
 <meta name="description" content="Блог разработчика. Потому что правильные вещи нужно записывать.">
-<link rel="canonical" href="https://eduard-sukharev.github.io/php-rector-i-kak-on-vam-ne-pomozhet" />
+<link rel="canonical" href="https://eduard-sukharev.github.io/tip-integer-v-kolonke-id-kak-bomba-zamedlennogo-dejstviya" />
 <meta name="generator" content="Eleventy v2.0.0">
 
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -22,23 +22,23 @@
 <link rel="alternate" type="application/rss+xml"  title="Пшерги кодинг RSS feed (full articles)" href="/full.xml" />
 <link rel="alternate" type="application/json" title="Пшерги кодинг JSON feed (excerpts)" href="/excerpts.json">
 <link rel="alternate" type="application/json" title="Пшерги кодинг JSON feed (full articles)" href="/full.json">
-<meta property="og:url" content="https://eduard-sukharev.github.io/php-rector-i-kak-on-vam-ne-pomozhet/">
+<meta property="og:url" content="https://eduard-sukharev.github.io/tip-integer-v-kolonke-id-kak-bomba-zamedlennogo-dejstviya/">
 <meta property="og:type" content="article">
-<meta property="og:image" content="https://eduard-sukharev.github.io/images/share_2023-10-23.webp">
-<meta property="twitter:image" content="https://eduard-sukharev.github.io/images/share_2023-10-23.webp">
+<meta property="og:image" content="https://eduard-sukharev.github.io/images/share_2023-12-25.webp">
+<meta property="twitter:image" content="https://eduard-sukharev.github.io/images/share_2023-12-25.webp">
 <meta property="twitter:card" content="summary_large_image">
 
 <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "Article",
-        "headline": "PHP Rector и как он вам [не] поможет",
-        "image": ["https://eduard-sukharev.github.io/images/share_2023-10-23.webp"],
+        "headline": "Тип integer в колонке id как бомба замедленного действия",
+        "image": ["https://eduard-sukharev.github.io/images/share_2023-12-25.webp"],
         "author": {
             "@type": "Person",
             "name": "Эдуард Сухарев"
         },
-        "mainEntityOfPage": "https://eduard-sukharev.github.io/php-rector-i-kak-on-vam-ne-pomozhet/",
+        "mainEntityOfPage": "https://eduard-sukharev.github.io/tip-integer-v-kolonke-id-kak-bomba-zamedlennogo-dejstviya/",
         "datePublished": "2023-12-25T00:00:00.000Z",
         "description": "Блог разработчика. Потому что правильные вещи нужно записывать."
     }
@@ -107,7 +107,7 @@
 
   
 <div class="top-image">
-<img src="/images/posts/2023-10-23.webp" alt="" />
+<img src="/images/posts/2023-12-25.webp" alt="" />
 
 <p class="credit">
   Автор фото:
@@ -118,54 +118,58 @@
 
 
   <header>
-    <h1>PHP Rector и как он вам [не] поможет</h1>
+    <h1>Тип integer в колонке id как бомба замедленного действия</h1>
   </header>
   <div class="top-meta">
-  <time>23 Oct 2023</time>
+  <time>25 Dec 2023</time>
   <span class="separator">•</span>  
-  <span data-tooltip="66 words" class="tooltip-bottom reading-time">1 минут чтобы прочитать</span>
+  <span data-tooltip="130 words" class="tooltip-bottom reading-time">1 минут чтобы прочитать</span>
 </div>
   
-  <p>Все, кто планировал переход на новые версии PHP слышали о проекте Rector для автоматизации рефакторинга и адаптации новых фич. Каждый кто завершал такой переход может рассказать пачку историй о том как и когда всё пошло не по плану.</p>
-<h2 id="chto-takoe-rector">Что такое Rector</h2>
-<p><a href="https://getrector.com/">Rector</a> это инструмент автоматизации рефакторинга и апгрейда кодовой базы. Он поможет с базовыми вещами вроде добавления тайп-хинтов и конвертацией PhpDoc в аттрибуты. Более того, типичные сценарии объединены в наборы правил: например набор Php52 для миграции на PHP 5.2 содержит сразу два правила: ContinueToBreakInSwitchRector и VarToPublicPropertyRector, которые заменят <code>continue</code> на <code>break</code> в switch-конструкциях и заменят ключевое слово <code>var</code> на <code>public</code> в объявлении полей класса, соответственно. Удобно!</p>
-<h2 id="v-chyom-podvoh">В чём подвох?</h2>
-<p>Давайте рассмотрим типичный пример апгрейда PHP между мажорными версиями - ведь именно это опаснее всего и именно в таких случаях мы хотим подстелить соломку. К примеру, пусть мы хотим обновить наш страшный legacy проект с PHP 5.6 на PHP 7.0. Смотрим на несовместимые изменения в <a href="https://www.php.net/manual/en/migration70.incompatible.php">PHP 7.0</a> и видим среди прочих:</p>
-<ul>
-<li>Negative bitshifts теперь бросают эксепшен, однако в Rector нет правил на то, чтобы детектить такие случаи</li>
-<li>Удалены все ext/mysql и ext/mssql функции - Rector также не подсветит вам что вы их испльзуете</li>
-<li>Функции <code>set_socket_blocking</code> и <code>set_magic_quotes_runtime</code> (с алиасом <code>magic_quotes_runtime</code>) удалены - не обнаруживается Rector</li>
-</ul>
-<p>и др.</p>
-<h2 id="chto-lishnego-v-rector">Что лишнего в Rector?</h2>
-<p>В то же самое время в наборе правил Rector для Php70 есть следующие штуки:</p>
-<ul>
-<li>Использование <code>&lt;=&gt;</code> вместо тернарных операторов</li>
-<li>Замена if/else и тернарных операторов на оператор <code>&lt;=&gt;</code></li>
-<li>Замена if+isset и тернарных операторов на <code>??</code></li>
-<li>Замена вложенных вызовов <code>dirname()</code> на один с указанием глубины</li>
-</ul>
-<p>Хорошие правила, полезные, но не первой необходимости. Такие правки увеличивают и без этого потенциально крупное изменение в коде, усложняя процесс ревью. В целом отлично когда вы рутинно апгрейдитесь с одной версии пакета на другую или между минорными версиями языка.
-Для случаев когда вы просто хотите чтобы при апгрейде ничего не сломалось, нужен более лаконичный набор правил.</p>
-<h2 id="kakie-est-alternativy">Какие есть альтернативы?</h2>
-<p>А в общем-то альтернативы не то чтобы есть. <a href="https://packagist.org/packages/phpstan/phpstan">phpstan</a> и <a href="https://packagist.org/packages/vimeo/psalm">psalm</a> могут помочь привести в порядок кодовую базу в соответствии с наборами правил, однако точно так же базовые наборы обычно слишком широки и вносят слишком много лишних изменений.</p>
-<p>Важный урок, который я вынес из общения с этими инструментами: эти инструменты не сделают волшебно, бесшовно и безболезненно.</p>
-<p>Некоторые автоматизированные правки могут прикрыть вам тыл, тогда как другие внесут ошибки <a href="https://www.php.net/manual/ru/language.oop5.variance.php">ковариантности и контравариантности</a> в наследовании. Такие ошибки интерпретатор отловит при первой же попытке запустить проект, но что если ошибки могут проявиться только в райнтайме?
-Например, добавленный <code>declare(strict_types=1);</code> сделает ваш код более строгим и там где раньше срабатывало приведение типов, теперь появится ошибка!</p>
-<h2 id="tak-chto-delat-to">Так что делать-то?</h2>
-<p>В конечном итоге мы хотим без ошибок выкатить в продакшен код на новой версии языка.</p>
-<p>Это означает что мы хотим как можно больше ошибо найти на ранних стадиях перехода - чем раньше, тем лучше, тем дешевле. Так что самое очевидное - <strong>обложитесь тестами</strong>.</p>
-<p>Если тестами обкладываться сложно, долго и дорого (потому что у вас legacy) - найдите ключевой функционал и покройте тестами хотя бы его. Вероятно чтобы покрыть его тестами вам будет нужно сначала вручную <strong>критические части кода хорошенько отрефакторить</strong> и например уложить в классы с полноценным внедрением зависимостей, вынесением низкоуровневой работы с БД или сетью в отдельные классы, внедрением работы с интерфейсами и абстракцией вместо конкретных реализаций, и в целом обмазывании себя типизацией со всех сторон.</p>
-<p>И все проблемы автоматических инструментов сводятся к тому что они могут быть лишь настолько умными, насколько это возможно. Если ваша функция работы с БД принимает аргумент <code>$ref</code> типа <code>int[]|string[]|false|null|mixed</code>, то поможет вам только собственный опыт в том как этот клубок распутать и что делать дальше, потому что применение автоматизации здесь совершенно невозможно.</p>
-<h2 id="v-zaklyuchenie">В заключение</h2>
-<p>Может показаться что я утверждаю что такие инструменты как Rector, psalm и phpstan не нужны, однако это совершенно не так. Я лишь подсвечиваю тот момент, которому не всегда деляют много внимания в диферамбах о том, как быстро и легко обновить весь проект с егозависимостями.</p>
-<p>Будьте готовы к тому что инструменты сделают хуже или привнесут неочевидные ошибки, однако эти же инструменты помогут найти самые проблемные участки кода, за которые уже придётся взяться вручную.</p>
-<p>Успешного вам обновления.</p>
+  <p>Если вы работаете с Legacy проектом, то загляните в структуру ваших таблиц - возможно некоторые из них используют integer в качестве id поля, и это очень плохо.</p>
+<h2 id="v-chyom-problema">В чём проблема</h2>
+<p>Тип integer имеет лимиты от -2147483648 до +2147483647 (от 1 до 2147483647 для serial) в PostgresQL. К этому лимиту довольно легко подойти, особенно если система была создана уже значительно время назад.</p>
+<p>Особенность этой проблемы:</p>
+<ol>
+<li>она не будет тригериться деплоем или другими действиями с кодом</li>
+<li>она не проявится от аномальной нагрузки</li>
+<li>может затронуть очень разный функционал</li>
+</ol>
+<h2 id="kak-proverit">Как проверить</h2>
+<p>Если у вас небольшой проект и таблиц немного, то можно руками и глазами проверить каждую таблицу. Однако это плохо масштабируется.</p>
+<p>Можно проверить размерность всех id колонок во всех таблицах, однако в разное время даже в одном проекте могут использоваться разные конвенции именования, поэтому часть таблиц могут иметь колонки вроде <code>product_id</code> или <code>rid</code> и т.п.</p>
+<p>Ещё один более масштабируемый вариант - проверить текущие значения в последовательностях используемых для автоинкрементных колонок. Для этого подойдёт такой запрос:</p>
+<pre class="language-PostgresQL"><code class="language-PostgresQL">SELECT c.relname, nextval(c.relname::regclass) AS seq_val
+FROM pg_class c
+WHERE c.relkind = 'S'
+  AND  nextval(c.relname::regclass) > 1000000000
+ORDER BY seq_val desc;</code></pre>
+<p>В результате получим список последовательностей превысивших 1 млрд., отсортированных по убывающей. Верхний лимит integer как мы помним больше 2 млрд. поэтому значение в 1 млрд. выглядит как то, с чего стоит начать в первую очередь. По названию sequence можно довольно легко определить какая таблица её использует.</p>
+<p>Не забываем про таблицы ссылающиеся на изменённые id в качестве внешних ключей для связи многие-к-одному или многие-ко-многим. Если foreign key constraint прописаны для таких таблиц, то их можно найти следующим запросом (здесь мы ищем внешние ключи ссылающиеся на <code>my_table_name(id)</code>):</p>
+<pre class="language-PostgresQL"><code class="language-PostgresQL">SELECT la.attrelid::regclass AS referencing_table,
+       la.attname AS referencing_column
+FROM pg_constraint AS c
+         JOIN pg_index AS i
+              ON i.indexrelid = c.conindid
+         JOIN pg_attribute AS la
+              ON la.attrelid = c.conrelid
+                  AND la.attnum = c.conkey[1]
+         JOIN pg_attribute AS ra
+              ON ra.attrelid = c.confrelid
+                  AND ra.attnum = c.confkey[1]
+WHERE c.confrelid = 'my_table_name'::regclass
+  AND c.contype = 'f'
+  AND ra.attname = 'id'
+  AND cardinality(c.confkey) = 1;</code></pre>
+<p>Однако foreign key constraint есть не всегда (а порой его создание может быть вообще невозможным), поэтому стоит принять это во внимание - на этом автоматизация заканчивается и дальше придётся проверять руками и глазами.</p>
+<h2 id="na-chto-zamenit">На что заменить</h2>
+<p>Простым решением для текущего состояния будет перевести тип колонки из int в bigint - запаса прочности этого типа данных должно хватить.</p>
+<p>Однако не стоит считать что bigint это серебряная пуля при выборе типа id колонки в новых таблицах - всё конечно же будет зависеть от ваших сценариев использования и предназначения таблицы, так что ответ здесь как всегда - it depends.</p>
 
 </article>
 
 <div class="author-info">
-  <p>Впервые опубликовано <time>23 October 2023</time> от Эдуард Сухарев</p>
+  <p>Впервые опубликовано <time>25 December 2023</time> от Эдуард Сухарев</p>
 </div>
 <div class="bottom-meta">
   
@@ -179,7 +183,11 @@
     </li>
   
     <li>
-      <a title="Статьи с тегом 'Рефакторинг'" href="/tag/refaktoring/">Рефакторинг</a>
+      <a title="Статьи с тегом 'Алертинг'" href="/tag/alerting/">Алертинг</a>
+    </li>
+  
+    <li>
+      <a title="Статьи с тегом 'Bad practices'" href="/tag/bad-practices/">Bad practices</a>
     </li>
   
   </ul>
@@ -233,7 +241,7 @@
 
       
       <li>
-        <a target="_blank" rel="noopener noreferrer" data-tooltip="Поделиться Twitter - откроется в новой вкладке" rel="noopener noreferrer" href="https://twitter.com/intent/tweet/?text=PHP Rector и как он вам [не] поможет&amp;url=https://eduard-sukharev.github.io/php-rector-i-kak-on-vam-ne-pomozhet/" class="twitter">
+        <a target="_blank" rel="noopener noreferrer" data-tooltip="Поделиться Twitter - откроется в новой вкладке" rel="noopener noreferrer" href="https://twitter.com/intent/tweet/?text=Тип integer в колонке id как бомба замедленного действия&amp;url=https://eduard-sukharev.github.io/tip-integer-v-kolonke-id-kak-bomba-zamedlennogo-dejstviya/" class="twitter">
           <svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Twitter icon</title><path class="fillable" d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"></path></svg>
         </a>
       </li>
@@ -256,7 +264,7 @@
 
       
       <li>
-        <a target="_blank" rel="noopener noreferrer" data-tooltip="Поделиться Linkedin - откроется в новой вкладке" rel="noopener noreferrer" href="https://www.linkedin.com/sharing/share-offsite/?url=https://eduard-sukharev.github.io/php-rector-i-kak-on-vam-ne-pomozhet/" class="linkedin">
+        <a target="_blank" rel="noopener noreferrer" data-tooltip="Поделиться Linkedin - откроется в новой вкладке" rel="noopener noreferrer" href="https://www.linkedin.com/sharing/share-offsite/?url=https://eduard-sukharev.github.io/tip-integer-v-kolonke-id-kak-bomba-zamedlennogo-dejstviya/" class="linkedin">
           <svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>LinkedIn icon</title><path class="fillable" d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"/></svg>
         </a>
       </li>
@@ -298,17 +306,12 @@
   <ul>
     <li>
       
-      <a href="/tip-integer-v-kolonke-id-kak-bomba-zamedlennogo-dejstviya/">
-        <span class="headline">← Статья поновее</span>
-        <span class="title">Тип integer в колонке id как бомба замедленного действия</span>
-      </a>
-      
     </li>
     <li>
       
-      <a href="/obuyavlyajte-klassy-final-po-umolchaniyu/">
+      <a href="/php-rector-i-kak-on-vam-ne-pomozhet/">
         <span class="headline">Более старая статья →</span>
-        <span class="title">Объявляйте классы final по-умолчанию</span>
+        <span class="title">PHP Rector и как он вам [не] поможет</span>
       </a>
       
     </li>
