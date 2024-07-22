@@ -12,7 +12,12 @@
 ],
 "language": "ru",
 "icon" : "https://eduard-sukharev.github.io/icon-192.png",
-"favicon" : "https://eduard-sukharev.github.io/icon-512.png","items": [{"id": "https://eduard-sukharev.github.io/tip-integer-v-kolonke-id-kak-bomba-zamedlennogo-dejstviya/",
+"favicon" : "https://eduard-sukharev.github.io/icon-512.png","items": [{"id": "https://eduard-sukharev.github.io/obnovlenie-glibc-i-slomannye-indeksy-potgresql/",
+"url": "https://eduard-sukharev.github.io/obnovlenie-glibc-i-slomannye-indeksy-potgresql/",
+"title": "Обновление glibc и сломанные индексы PotgreSQL",
+"date_published": "2024-07-22T00:00:00Z",
+"language": "","content_html": "&lt;p&gt;Если вы используете PosgtreSQL в качестве СУБД, то не спешите обновлять ваши сервера: можете получить на ровном месте очень нетривиальные к отслеживанию ошибки.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://eduard-sukharev.github.io/obnovlenie-glibc-i-slomannye-indeksy-potgresql/&quot;&gt;Читать далее Пшерги кодинг →&lt;/a&gt;&lt;/p&gt;"
+    },{"id": "https://eduard-sukharev.github.io/tip-integer-v-kolonke-id-kak-bomba-zamedlennogo-dejstviya/",
 "url": "https://eduard-sukharev.github.io/tip-integer-v-kolonke-id-kak-bomba-zamedlennogo-dejstviya/",
 "title": "Тип integer в колонке id как бомба замедленного действия",
 "date_published": "2023-12-25T00:00:00Z",

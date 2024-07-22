@@ -3,15 +3,15 @@
   <head>
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PHP Rector и как он вам [не] поможет - Пшерги кодинг</title>
-<meta property="og:title" content="PHP Rector и как он вам [не] поможет - Пшерги кодинг">
+<title>Обновление glibc и сломанные индексы PotgreSQL - Пшерги кодинг</title>
+<meta property="og:title" content="Обновление glibc и сломанные индексы PotgreSQL - Пшерги кодинг">
 <link rel="stylesheet" href="/css/style.css?v=1721674915">
 <script src="/js/scripts.js?v=1721674915"></script>
 <script>
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('/service-worker.js');
 </script>
 <meta name="description" content="Блог разработчика. Потому что правильные вещи нужно записывать.">
-<link rel="canonical" href="https://eduard-sukharev.github.io/php-rector-i-kak-on-vam-ne-pomozhet" />
+<link rel="canonical" href="https://eduard-sukharev.github.io/obnovlenie-glibc-i-slomannye-indeksy-potgresql" />
 <meta name="generator" content="Eleventy v2.0.0">
 
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -22,23 +22,23 @@
 <link rel="alternate" type="application/rss+xml"  title="Пшерги кодинг RSS feed (full articles)" href="/full.xml" />
 <link rel="alternate" type="application/json" title="Пшерги кодинг JSON feed (excerpts)" href="/excerpts.json">
 <link rel="alternate" type="application/json" title="Пшерги кодинг JSON feed (full articles)" href="/full.json">
-<meta property="og:url" content="https://eduard-sukharev.github.io/php-rector-i-kak-on-vam-ne-pomozhet/">
+<meta property="og:url" content="https://eduard-sukharev.github.io/obnovlenie-glibc-i-slomannye-indeksy-potgresql/">
 <meta property="og:type" content="article">
-<meta property="og:image" content="https://eduard-sukharev.github.io/images/share_2023-10-23.webp">
-<meta property="twitter:image" content="https://eduard-sukharev.github.io/images/share_2023-10-23.webp">
+<meta property="og:image" content="https://eduard-sukharev.github.io/images/share_2024-07-22.webp">
+<meta property="twitter:image" content="https://eduard-sukharev.github.io/images/share_2024-07-22.webp">
 <meta property="twitter:card" content="summary_large_image">
 
 <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "Article",
-        "headline": "PHP Rector и как он вам [не] поможет",
-        "image": ["https://eduard-sukharev.github.io/images/share_2023-10-23.webp"],
+        "headline": "Обновление glibc и сломанные индексы PotgreSQL",
+        "image": ["https://eduard-sukharev.github.io/images/share_2024-07-22.webp"],
         "author": {
             "@type": "Person",
             "name": "Эдуард Сухарев"
         },
-        "mainEntityOfPage": "https://eduard-sukharev.github.io/php-rector-i-kak-on-vam-ne-pomozhet/",
+        "mainEntityOfPage": "https://eduard-sukharev.github.io/obnovlenie-glibc-i-slomannye-indeksy-potgresql/",
         "datePublished": "2024-07-22T00:00:00.000Z",
         "description": "Блог разработчика. Потому что правильные вещи нужно записывать."
     }
@@ -107,65 +107,101 @@
 
   
 <div class="top-image">
-<img src="/images/posts/2023-10-23.webp" alt="" />
+<img src="/images/posts/2024-07-22.webp" alt="" />
 
 <p class="credit">
   Автор фото:
-  <a href="https://civitai.com/models/25694?modelVersionId=101593">Stable Diffusion, pure Evolution v2</a>
+  <a href="">Stable Diffusion, TechDraw LoRA, Hacked tech LoRA</a>
 </p>
 
 </div>
 
 
   <header>
-    <h1>PHP Rector и как он вам [не] поможет</h1>
+    <h1>Обновление glibc и сломанные индексы PotgreSQL</h1>
   </header>
   <div class="top-meta">
-  <time>23 Oct 2023</time>
+  <time>22 Jul 2024</time>
   <span class="separator">•</span>  
-  <span data-tooltip="66 words" class="tooltip-bottom reading-time">1 минут чтобы прочитать</span>
+  <span data-tooltip="249 words" class="tooltip-bottom reading-time">2 минут чтобы прочитать</span>
 </div>
   
-  <p>Все, кто планировал переход на новые версии PHP слышали о проекте Rector для автоматизации рефакторинга и адаптации новых фич. Каждый кто завершал такой переход может рассказать пачку историй о том как и когда всё пошло не по плану.</p>
-<h2 id="chto-takoe-rector">Что такое Rector</h2>
-<p><a href="https://getrector.com/">Rector</a> это инструмент автоматизации рефакторинга и апгрейда кодовой базы. Он поможет с базовыми вещами вроде добавления тайп-хинтов и конвертацией PhpDoc в аттрибуты. Более того, типичные сценарии объединены в наборы правил: например набор Php52 для миграции на PHP 5.2 содержит сразу два правила: ContinueToBreakInSwitchRector и VarToPublicPropertyRector, которые заменят <code>continue</code> на <code>break</code> в switch-конструкциях и заменят ключевое слово <code>var</code> на <code>public</code> в объявлении полей класса, соответственно. Удобно!</p>
-<h2 id="v-chyom-podvoh">В чём подвох?</h2>
-<p>Давайте рассмотрим типичный пример апгрейда PHP между мажорными версиями - ведь именно это опаснее всего и именно в таких случаях мы хотим подстелить соломку. К примеру, пусть мы хотим обновить наш страшный legacy проект с PHP 5.6 на PHP 7.0. Смотрим на несовместимые изменения в <a href="https://www.php.net/manual/en/migration70.incompatible.php">PHP 7.0</a> и видим среди прочих:</p>
-<ul>
-<li>Negative bitshifts теперь бросают эксепшен, однако в Rector нет правил на то, чтобы детектить такие случаи</li>
-<li>Удалены все ext/mysql и ext/mssql функции - Rector также не подсветит вам что вы их испльзуете</li>
-<li>Функции <code>set_socket_blocking</code> и <code>set_magic_quotes_runtime</code> (с алиасом <code>magic_quotes_runtime</code>) удалены - не обнаруживается Rector</li>
-</ul>
-<p>и др.</p>
-<h2 id="chto-lishnego-v-rector">Что лишнего в Rector?</h2>
-<p>В то же самое время в наборе правил Rector для Php70 есть следующие штуки:</p>
-<ul>
-<li>Использование <code>&lt;=&gt;</code> вместо тернарных операторов</li>
-<li>Замена if/else и тернарных операторов на оператор <code>&lt;=&gt;</code></li>
-<li>Замена if+isset и тернарных операторов на <code>??</code></li>
-<li>Замена вложенных вызовов <code>dirname()</code> на один с указанием глубины</li>
-</ul>
-<p>Хорошие правила, полезные, но не первой необходимости. Такие правки увеличивают и без этого потенциально крупное изменение в коде, усложняя процесс ревью. В целом отлично когда вы рутинно апгрейдитесь с одной версии пакета на другую или между минорными версиями языка.
-Для случаев когда вы просто хотите чтобы при апгрейде ничего не сломалось, нужен более лаконичный набор правил.</p>
-<h2 id="kakie-est-alternativy">Какие есть альтернативы?</h2>
-<p>А в общем-то альтернативы не то чтобы есть. <a href="https://packagist.org/packages/phpstan/phpstan">phpstan</a> и <a href="https://packagist.org/packages/vimeo/psalm">psalm</a> могут помочь привести в порядок кодовую базу в соответствии с наборами правил, однако точно так же базовые наборы обычно слишком широки и вносят слишком много лишних изменений.</p>
-<p>Важный урок, который я вынес из общения с этими инструментами: эти инструменты не сделают волшебно, бесшовно и безболезненно.</p>
-<p>Некоторые автоматизированные правки могут прикрыть вам тыл, тогда как другие внесут ошибки <a href="https://www.php.net/manual/ru/language.oop5.variance.php">ковариантности и контравариантности</a> в наследовании. Такие ошибки интерпретатор отловит при первой же попытке запустить проект, но что если ошибки могут проявиться только в райнтайме?
-Например, добавленный <code>declare(strict_types=1);</code> сделает ваш код более строгим и там где раньше срабатывало приведение типов, теперь появится ошибка!</p>
-<h2 id="tak-chto-delat-to">Так что делать-то?</h2>
-<p>В конечном итоге мы хотим без ошибок выкатить в продакшен код на новой версии языка.</p>
-<p>Это означает что мы хотим как можно больше ошибо найти на ранних стадиях перехода - чем раньше, тем лучше, тем дешевле. Так что самое очевидное - <strong>обложитесь тестами</strong>.</p>
-<p>Если тестами обкладываться сложно, долго и дорого (потому что у вас legacy) - найдите ключевой функционал и покройте тестами хотя бы его. Вероятно чтобы покрыть его тестами вам будет нужно сначала вручную <strong>критические части кода хорошенько отрефакторить</strong> и например уложить в классы с полноценным внедрением зависимостей, вынесением низкоуровневой работы с БД или сетью в отдельные классы, внедрением работы с интерфейсами и абстракцией вместо конкретных реализаций, и в целом обмазывании себя типизацией со всех сторон.</p>
-<p>И все проблемы автоматических инструментов сводятся к тому что они могут быть лишь настолько умными, насколько это возможно. Если ваша функция работы с БД принимает аргумент <code>$ref</code> типа <code>int[]|string[]|false|null|mixed</code>, то поможет вам только собственный опыт в том как этот клубок распутать и что делать дальше, потому что применение автоматизации здесь совершенно невозможно.</p>
-<h2 id="v-zaklyuchenie">В заключение</h2>
-<p>Может показаться что я утверждаю что такие инструменты как Rector, psalm и phpstan не нужны, однако это совершенно не так. Я лишь подсвечиваю тот момент, которому не всегда деляют много внимания в диферамбах о том, как быстро и легко обновить весь проект с егозависимостями.</p>
-<p>Будьте готовы к тому что инструменты сделают хуже или привнесут неочевидные ошибки, однако эти же инструменты помогут найти самые проблемные участки кода, за которые уже придётся взяться вручную.</p>
-<p>Успешного вам обновления.</p>
+  <p>Если вы используете PosgtreSQL в качестве СУБД, то не спешите обновлять ваши сервера: можете получить на ровном месте очень нетривиальные к отслеживанию ошибки.</p>
+<h2 id="obnovlenie-glibc">Обновление glibc</h2>
+<p>Один из самых важных компонент при обновлении ОС это пакет glibc, который используется почти всем софтом в системе.</p>
+<p>1 Августа 2018 года (вышла версия 2.28)[https://sourceware.org/legacy-ml/libc-alpha/2018-08/msg00003.html], в которой среди крупных изменений числится:</p>
+<blockquote>
+<p>The localization data for ISO 14651 is updated to match the 2016 Edition 4 release of the standard, this matches data provided by Unicode 9.0.0.  This update introduces significant improvements to the collation of Unicode characters.  This release deviates slightly from the standard in that the collation element ordering for lowercase and uppercase LATIN script characters is adjusted to ensure that regular expressions with ranges like [a-z] and [A-Z] don’t interleave e.g. A is not matched by [a-z].  With the update many locales have been updated to take advantage of the new collation information.  The new collation information has increased the size of the compiled locale archive or binary locales.</p>
+</blockquote>
+<p>Изменились порядок сортировки строк и особенности классификации некоторых символов, что соответственно напрямую отразилось на работе PostgreSQL с поддержкой правил сортировки строк (COLLATIONS).</p>
+<h2 id="primery-sortirovki-v-postgresql-s-raznymi-versiyami-glibc">Примеры сортировки в PostgreSQL с разными версиями (g)libc</h2>
+<p>Найти и проверить одинаковые версии PostgreSQL на дистрибутивах с разными версиями glibc мне не удалось, однако glibc это лишь реализация Standard C library. Другой реализацией является musl, используемый в дистрибутивах Alpine в Docker. Давайте проверим, отличаются ли реализации порядка сортировки между glibc и libc.</p>
+<p>Создадим composer.yaml:</p>
+<pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">'3.9'</span>
+
+<span class="token key atrule">services</span><span class="token punctuation">:</span>
+  <span class="token key atrule">db_1</span><span class="token punctuation">:</span>
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> postgres<span class="token punctuation">:</span><span class="token number">16.3</span>
+    <span class="token key atrule">user</span><span class="token punctuation">:</span> postgres
+    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+      <span class="token key atrule">POSTGRES_PASSWORD</span><span class="token punctuation">:</span> postgres
+      <span class="token key atrule">POSTGRES_USER</span><span class="token punctuation">:</span> postgres
+  <span class="token key atrule">db_2</span><span class="token punctuation">:</span>
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> postgres<span class="token punctuation">:</span>16.3<span class="token punctuation">-</span>alpine
+    <span class="token key atrule">user</span><span class="token punctuation">:</span> postgres
+    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+      <span class="token key atrule">POSTGRES_PASSWORD</span><span class="token punctuation">:</span> postgres
+      <span class="token key atrule">POSTGRES_USER</span><span class="token punctuation">:</span> postgres</code></pre>
+<p>и поднимем контейнеры с помощью</p>
+<pre class="language-bash"><code class="language-bash"><span class="token function">docker</span> compose up <span class="token parameter variable">-d</span> --force-recreate --renew-anon-volumes</code></pre>
+<p>и запустим <code>psql</code> в одном из них (для подключения к другому просто замените <code>db_1</code> на <code>db_2</code>)</p>
+<pre><code>docker compose exec -ti db_1 psql
+</code></pre>
+<p>Теперь сделаем запросы и сравним результаты. Вариант сортировки в PostgeSQL, в дистрибутиве Debian:</p>
+<pre class="language-psql"><code class="language-psql">postgres=# SELECT name FROM unnest(ARRAY[
+    'а', 'д', 'е', 'ё', 'ж', 'я'
+]) name ORDER BY name;
+ name 
+ ------
+ а
+ д
+ е
+ ё
+ ж
+ я
+(6 rows)</code></pre>
+<p>Вариант сортровки в PostgreSQL, в дистрибутиве Alpine:</p>
+<pre class="language-psql"><code class="language-psql">postgres=# SELECT name FROM unnest(ARRAY[
+    'а', 'д', 'е', 'ё', 'ж', 'я'
+]) name ORDER BY name COLLATE "C";
+ name 
+ ------
+ а
+ д
+ е
+ ж
+ я
+ ё
+(6 rows)</code></pre>
+<p>Как видим, сортровка строк отличается в разных дистрибутивах с разными версиями стандартной библиотеки. Это только цветочки - на самом деле роль играет и сортировка строк установленная по умолчанию в системе, и сам алгоритм в версии стандартной библиотеки.
+Проблема однако гораздо серъёзнее, чем просто буква “ё” съехавшая в конец списка телефонной книги. Сортировка строк влияет как на запросы типа <code>SELECT ... ORDER BY ...</code>, так и на b-tree индексы на текстовых полях. Это значит, что существующие индексы перестают работать корректно: кроме снижения скорости запросов мы также можем получить неконсистентность данных, т.к. уникальность в таблицах реализована через <code>UNIQUE INDEX</code>.</p>
+<p>Именно с этим мы и столкнулись - обновление серверов СУБД прошло корректно и без ошибок, однако мы заметили появившиеся ошибки вида <code>Duplicate key violation</code>. И действительно, при наличии UNIQUE INDEX данные всё же дублировались, причём далеко не все запросы показывали наличие дублирования!</p>
+<h2 id="chto-delat">Что делать?</h2>
+<p>Очевидное решение: ребилд индексов, затрагивающих текстовые поля. Сделать это нужно после того как репликация и синхронизация данных со старого сервера на новый прошла, но до того как пускать трафик на новый сервер.</p>
+<p>А если поймали ошибки с дублированием строк? Очевидно, при перестроении индекса вы получите ошибку, т.к. фактически данные у вас дублируются. Тогда придётся сначала решить эту проблему, избавившись от дубликатов данных. Если трафика много, то лучшим решением будет полностью остановить трафик на БД и сначала решить проблему с данными, а затем уже пересобирать индекс. Будьте готовы к такому исходу, когда придётся полностью откатиться к последнему бэкапу (вы же делаете бэкапы?).</p>
+<p>Другой варант решения — добавить уникальный префикс/суффикс к строковым значениям в дублирующихся записях, что позволит быстро решить проблему, пересобрать индекс и дать системе работать дальше. В этом случае вам всё равно придётся разбираться с последствиями: скорее всего в других таблицах уже появились данные, ссылающиеся на дубликаты, поэтому просто так и удалить не получится, но по крайней мере вы выиграете время на приведение системы в порядок.</p>
+<h2 id="kak-predotvratit">Как предотвратить?</h2>
+<h3 id="otrabotat-process-obnovleniya-bd">Отработать процесс обновления БД</h3>
+<p>Учитывать подобный риск и проговаривать его с командой поддержки инфраструктуры</p>
+<h3 id="ne-obnovlyat-glibc">Не обновлять glibc</h3>
+<p>Доволно радикальный подход, который может означать отказ от обновления системы вообще. Такое подходит далеко не всем, но стоит держать его как один из действенных способов избежать проблем.</p>
+<h3 id="perestat-zaviset-ot-glibc">Перестать зависеть от glibc</h3>
+<p>Переключить PostgreSQL на ICU для работы с сортировкой строк. В этом случае вы будете также зависеть от сторонней библиотеки (libicu), но её обновление не требуется при обновлении всей системы.</p>
 
 </article>
 
 <div class="author-info">
-  <p>Впервые опубликовано <time>23 October 2023</time> от Эдуард Сухарев</p>
+  <p>Впервые опубликовано <time>22 July 2024</time> от Эдуард Сухарев</p>
 </div>
 <div class="bottom-meta">
   
@@ -175,11 +211,11 @@
   <ul>
   
     <li>
-      <a title="Статьи с тегом 'Инструменты'" href="/tag/instrumenty/">Инструменты</a>
+      <a title="Статьи с тегом 'Lesson learned'" href="/tag/lesson-learned/">Lesson learned</a>
     </li>
   
     <li>
-      <a title="Статьи с тегом 'Рефакторинг'" href="/tag/refaktoring/">Рефакторинг</a>
+      <a title="Статьи с тегом 'PostgreSQL'" href="/tag/postgresql/">PostgreSQL</a>
     </li>
   
   </ul>
@@ -233,7 +269,7 @@
 
       
       <li>
-        <a target="_blank" rel="noopener noreferrer" data-tooltip="Поделиться Twitter - откроется в новой вкладке" rel="noopener noreferrer" href="https://twitter.com/intent/tweet/?text=PHP Rector и как он вам [не] поможет&amp;url=https://eduard-sukharev.github.io/php-rector-i-kak-on-vam-ne-pomozhet/" class="twitter">
+        <a target="_blank" rel="noopener noreferrer" data-tooltip="Поделиться Twitter - откроется в новой вкладке" rel="noopener noreferrer" href="https://twitter.com/intent/tweet/?text=Обновление glibc и сломанные индексы PotgreSQL&amp;url=https://eduard-sukharev.github.io/obnovlenie-glibc-i-slomannye-indeksy-potgresql/" class="twitter">
           <svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Twitter icon</title><path class="fillable" d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"></path></svg>
         </a>
       </li>
@@ -256,7 +292,7 @@
 
       
       <li>
-        <a target="_blank" rel="noopener noreferrer" data-tooltip="Поделиться Linkedin - откроется в новой вкладке" rel="noopener noreferrer" href="https://www.linkedin.com/sharing/share-offsite/?url=https://eduard-sukharev.github.io/php-rector-i-kak-on-vam-ne-pomozhet/" class="linkedin">
+        <a target="_blank" rel="noopener noreferrer" data-tooltip="Поделиться Linkedin - откроется в новой вкладке" rel="noopener noreferrer" href="https://www.linkedin.com/sharing/share-offsite/?url=https://eduard-sukharev.github.io/obnovlenie-glibc-i-slomannye-indeksy-potgresql/" class="linkedin">
           <svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>LinkedIn icon</title><path class="fillable" d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"/></svg>
         </a>
       </li>
@@ -298,17 +334,12 @@
   <ul>
     <li>
       
-      <a href="/tip-integer-v-kolonke-id-kak-bomba-zamedlennogo-dejstviya/">
-        <span class="headline">← Статья поновее</span>
-        <span class="title">Тип integer в колонке id как бомба замедленного действия</span>
-      </a>
-      
     </li>
     <li>
       
-      <a href="/obuyavlyajte-klassy-final-po-umolchaniyu/">
+      <a href="/tip-integer-v-kolonke-id-kak-bomba-zamedlennogo-dejstviya/">
         <span class="headline">Более старая статья →</span>
-        <span class="title">Объявляйте классы final по-умолчанию</span>
+        <span class="title">Тип integer в колонке id как бомба замедленного действия</span>
       </a>
       
     </li>

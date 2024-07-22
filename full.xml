@@ -3,12 +3,87 @@
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Пшерги кодинг</title>
 <subtitle>Блог разработчика. Потому что правильные вещи нужно записывать.</subtitle><link href="https://eduard-sukharev.github.io/full.xml" rel="self"/>
 <link href="https://eduard-sukharev.github.io/" rel="alternate" />
-<updated>2023-12-25T00:00:00Z</updated>
+<updated>2024-07-22T00:00:00Z</updated>
 <id>https://eduard-sukharev.github.io/</id>
 <author>
   <name>Эдуард Сухарев</name>
   <uri>https://eduard-sukharev.github.io/</uri>
-</author><entry><title>Тип integer в колонке id как бомба замедленного действия</title>
+</author><entry><title>Обновление glibc и сломанные индексы PotgreSQL</title>
+<link href="https://eduard-sukharev.github.io/obnovlenie-glibc-i-slomannye-indeksy-potgresql/"/>
+<updated>2024-07-22T00:00:00Z</updated>
+<id>https://eduard-sukharev.github.io/obnovlenie-glibc-i-slomannye-indeksy-potgresql/</id><content type="html">&lt;p&gt;Если вы используете PosgtreSQL в качестве СУБД, то не спешите обновлять ваши сервера: можете получить на ровном месте очень нетривиальные к отслеживанию ошибки.&lt;/p&gt;
+&lt;h2 id=&quot;obnovlenie-glibc&quot;&gt;Обновление glibc&lt;/h2&gt;
+&lt;p&gt;Один из самых важных компонент при обновлении ОС это пакет glibc, который используется почти всем софтом в системе.&lt;/p&gt;
+&lt;p&gt;1 Августа 2018 года (вышла версия 2.28)[https://sourceware.org/legacy-ml/libc-alpha/2018-08/msg00003.html], в которой среди крупных изменений числится:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The localization data for ISO 14651 is updated to match the 2016 Edition 4 release of the standard, this matches data provided by Unicode 9.0.0.  This update introduces significant improvements to the collation of Unicode characters.  This release deviates slightly from the standard in that the collation element ordering for lowercase and uppercase LATIN script characters is adjusted to ensure that regular expressions with ranges like [a-z] and [A-Z] don’t interleave e.g. A is not matched by [a-z].  With the update many locales have been updated to take advantage of the new collation information.  The new collation information has increased the size of the compiled locale archive or binary locales.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Изменились порядок сортировки строк и особенности классификации некоторых символов, что соответственно напрямую отразилось на работе PostgreSQL с поддержкой правил сортировки строк (COLLATIONS).&lt;/p&gt;
+&lt;h2 id=&quot;primery-sortirovki-v-postgresql-s-raznymi-versiyami-glibc&quot;&gt;Примеры сортировки в PostgreSQL с разными версиями (g)libc&lt;/h2&gt;
+&lt;p&gt;Найти и проверить одинаковые версии PostgreSQL на дистрибутивах с разными версиями glibc мне не удалось, однако glibc это лишь реализация Standard C library. Другой реализацией является musl, используемый в дистрибутивах Alpine в Docker. Давайте проверим, отличаются ли реализации порядка сортировки между glibc и libc.&lt;/p&gt;
+&lt;p&gt;Создадим composer.yaml:&lt;/p&gt;
+&lt;pre class=&quot;language-yaml&quot;&gt;&lt;code class=&quot;language-yaml&quot;&gt;&lt;span class=&quot;token key atrule&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;3.9&#39;&lt;/span&gt;
+
+&lt;span class=&quot;token key atrule&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;token key atrule&quot;&gt;db_1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token key atrule&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; postgres&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;16.3&lt;/span&gt;
+    &lt;span class=&quot;token key atrule&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; postgres
+    &lt;span class=&quot;token key atrule&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;token key atrule&quot;&gt;POSTGRES_PASSWORD&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; postgres
+      &lt;span class=&quot;token key atrule&quot;&gt;POSTGRES_USER&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; postgres
+  &lt;span class=&quot;token key atrule&quot;&gt;db_2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token key atrule&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; postgres&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;16.3&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;alpine
+    &lt;span class=&quot;token key atrule&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; postgres
+    &lt;span class=&quot;token key atrule&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;token key atrule&quot;&gt;POSTGRES_PASSWORD&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; postgres
+      &lt;span class=&quot;token key atrule&quot;&gt;POSTGRES_USER&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; postgres&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;и поднимем контейнеры с помощью&lt;/p&gt;
+&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token function&quot;&gt;docker&lt;/span&gt; compose up &lt;span class=&quot;token parameter variable&quot;&gt;-d&lt;/span&gt; --force-recreate --renew-anon-volumes&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;и запустим &lt;code&gt;psql&lt;/code&gt; в одном из них (для подключения к другому просто замените &lt;code&gt;db_1&lt;/code&gt; на &lt;code&gt;db_2&lt;/code&gt;)&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;docker compose exec -ti db_1 psql
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Теперь сделаем запросы и сравним результаты. Вариант сортировки в PostgeSQL, в дистрибутиве Debian:&lt;/p&gt;
+&lt;pre class=&quot;language-psql&quot;&gt;&lt;code class=&quot;language-psql&quot;&gt;postgres=# SELECT name FROM unnest(ARRAY[
+    &#39;а&#39;, &#39;д&#39;, &#39;е&#39;, &#39;ё&#39;, &#39;ж&#39;, &#39;я&#39;
+]) name ORDER BY name;
+ name 
+ ------
+ а
+ д
+ е
+ ё
+ ж
+ я
+(6 rows)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Вариант сортровки в PostgreSQL, в дистрибутиве Alpine:&lt;/p&gt;
+&lt;pre class=&quot;language-psql&quot;&gt;&lt;code class=&quot;language-psql&quot;&gt;postgres=# SELECT name FROM unnest(ARRAY[
+    &#39;а&#39;, &#39;д&#39;, &#39;е&#39;, &#39;ё&#39;, &#39;ж&#39;, &#39;я&#39;
+]) name ORDER BY name COLLATE &quot;C&quot;;
+ name 
+ ------
+ а
+ д
+ е
+ ж
+ я
+ ё
+(6 rows)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Как видим, сортровка строк отличается в разных дистрибутивах с разными версиями стандартной библиотеки. Это только цветочки - на самом деле роль играет и сортировка строк установленная по умолчанию в системе, и сам алгоритм в версии стандартной библиотеки.
+Проблема однако гораздо серъёзнее, чем просто буква “ё” съехавшая в конец списка телефонной книги. Сортировка строк влияет как на запросы типа &lt;code&gt;SELECT ... ORDER BY ...&lt;/code&gt;, так и на b-tree индексы на текстовых полях. Это значит, что существующие индексы перестают работать корректно: кроме снижения скорости запросов мы также можем получить неконсистентность данных, т.к. уникальность в таблицах реализована через &lt;code&gt;UNIQUE INDEX&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Именно с этим мы и столкнулись - обновление серверов СУБД прошло корректно и без ошибок, однако мы заметили появившиеся ошибки вида &lt;code&gt;Duplicate key violation&lt;/code&gt;. И действительно, при наличии UNIQUE INDEX данные всё же дублировались, причём далеко не все запросы показывали наличие дублирования!&lt;/p&gt;
+&lt;h2 id=&quot;chto-delat&quot;&gt;Что делать?&lt;/h2&gt;
+&lt;p&gt;Очевидное решение: ребилд индексов, затрагивающих текстовые поля. Сделать это нужно после того как репликация и синхронизация данных со старого сервера на новый прошла, но до того как пускать трафик на новый сервер.&lt;/p&gt;
+&lt;p&gt;А если поймали ошибки с дублированием строк? Очевидно, при перестроении индекса вы получите ошибку, т.к. фактически данные у вас дублируются. Тогда придётся сначала решить эту проблему, избавившись от дубликатов данных. Если трафика много, то лучшим решением будет полностью остановить трафик на БД и сначала решить проблему с данными, а затем уже пересобирать индекс. Будьте готовы к такому исходу, когда придётся полностью откатиться к последнему бэкапу (вы же делаете бэкапы?).&lt;/p&gt;
+&lt;p&gt;Другой варант решения — добавить уникальный префикс/суффикс к строковым значениям в дублирующихся записях, что позволит быстро решить проблему, пересобрать индекс и дать системе работать дальше. В этом случае вам всё равно придётся разбираться с последствиями: скорее всего в других таблицах уже появились данные, ссылающиеся на дубликаты, поэтому просто так и удалить не получится, но по крайней мере вы выиграете время на приведение системы в порядок.&lt;/p&gt;
+&lt;h2 id=&quot;kak-predotvratit&quot;&gt;Как предотвратить?&lt;/h2&gt;
+&lt;h3 id=&quot;otrabotat-process-obnovleniya-bd&quot;&gt;Отработать процесс обновления БД&lt;/h3&gt;
+&lt;p&gt;Учитывать подобный риск и проговаривать его с командой поддержки инфраструктуры&lt;/p&gt;
+&lt;h3 id=&quot;ne-obnovlyat-glibc&quot;&gt;Не обновлять glibc&lt;/h3&gt;
+&lt;p&gt;Доволно радикальный подход, который может означать отказ от обновления системы вообще. Такое подходит далеко не всем, но стоит держать его как один из действенных способов избежать проблем.&lt;/p&gt;
+&lt;h3 id=&quot;perestat-zaviset-ot-glibc&quot;&gt;Перестать зависеть от glibc&lt;/h3&gt;
+&lt;p&gt;Переключить PostgreSQL на ICU для работы с сортировкой строк. В этом случае вы будете также зависеть от сторонней библиотеки (libicu), но её обновление не требуется при обновлении всей системы.&lt;/p&gt;
+</content>
+</entry><entry><title>Тип integer в колонке id как бомба замедленного действия</title>
 <link href="https://eduard-sukharev.github.io/tip-integer-v-kolonke-id-kak-bomba-zamedlennogo-dejstviya/"/>
 <updated>2023-12-25T00:00:00Z</updated>
 <id>https://eduard-sukharev.github.io/tip-integer-v-kolonke-id-kak-bomba-zamedlennogo-dejstviya/</id><content type="html">&lt;p&gt;Если вы работаете с Legacy проектом, то загляните в структуру ваших таблиц - возможно некоторые из них используют integer в качестве id поля, и это очень плохо.&lt;/p&gt;

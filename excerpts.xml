@@ -3,12 +3,16 @@
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Пшерги кодинг</title>
 <subtitle>Блог разработчика. Потому что правильные вещи нужно записывать.</subtitle><link href="https://eduard-sukharev.github.io/excerpts.xml" rel="self"/>
 <link href="https://eduard-sukharev.github.io/" rel="alternate" />
-<updated>2023-12-25T00:00:00Z</updated>
+<updated>2024-07-22T00:00:00Z</updated>
 <id>https://eduard-sukharev.github.io/</id>
 <author>
   <name>Эдуард Сухарев</name>
   <uri>https://eduard-sukharev.github.io/</uri>
-</author><entry><title>Тип integer в колонке id как бомба замедленного действия</title>
+</author><entry><title>Обновление glibc и сломанные индексы PotgreSQL</title>
+<link href="https://eduard-sukharev.github.io/obnovlenie-glibc-i-slomannye-indeksy-potgresql/"/>
+<updated>2024-07-22T00:00:00Z</updated>
+<id>https://eduard-sukharev.github.io/obnovlenie-glibc-i-slomannye-indeksy-potgresql/</id><content type="html">&lt;p&gt;Если вы используете PosgtreSQL в качестве СУБД, то не спешите обновлять ваши сервера: можете получить на ровном месте очень нетривиальные к отслеживанию ошибки.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://eduard-sukharev.github.io/obnovlenie-glibc-i-slomannye-indeksy-potgresql/&quot;&gt;Читать далее Пшерги кодинг →&lt;/a&gt;&lt;/p&gt;</content>
+</entry><entry><title>Тип integer в колонке id как бомба замедленного действия</title>
 <link href="https://eduard-sukharev.github.io/tip-integer-v-kolonke-id-kak-bomba-zamedlennogo-dejstviya/"/>
 <updated>2023-12-25T00:00:00Z</updated>
 <id>https://eduard-sukharev.github.io/tip-integer-v-kolonke-id-kak-bomba-zamedlennogo-dejstviya/</id><content type="html">&lt;p&gt;Если вы работаете с Legacy проектом, то загляните в структуру ваших таблиц - возможно некоторые из них используют integer в качестве id поля, и это очень плохо.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://eduard-sukharev.github.io/tip-integer-v-kolonke-id-kak-bomba-zamedlennogo-dejstviya/&quot;&gt;Читать далее Пшерги кодинг →&lt;/a&gt;&lt;/p&gt;</content>
