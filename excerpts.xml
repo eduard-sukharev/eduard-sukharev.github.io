@@ -3,12 +3,16 @@
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Пшерги кодинг</title>
 <subtitle>Блог разработчика. Потому что правильные вещи нужно записывать.</subtitle><link href="https://eduard-sukharev.github.io/excerpts.xml" rel="self"/>
 <link href="https://eduard-sukharev.github.io/" rel="alternate" />
-<updated>2024-07-22T00:00:00Z</updated>
+<updated>2024-11-11T00:00:00Z</updated>
 <id>https://eduard-sukharev.github.io/</id>
 <author>
   <name>Эдуард Сухарев</name>
   <uri>https://eduard-sukharev.github.io/</uri>
-</author><entry><title>Обновление glibc и сломанные индексы PotgreSQL</title>
+</author><entry><title>Команда в Legacy проекте</title>
+<link href="https://eduard-sukharev.github.io/komanda-v-legacy-proekte/"/>
+<updated>2024-11-11T00:00:00Z</updated>
+<id>https://eduard-sukharev.github.io/komanda-v-legacy-proekte/</id><content type="html">&lt;p&gt;Иногда кажется, что проект небольшой и можно полностью переписать его за пару месяцев в одиночку. А иной раз руки просто опускаются когда оглядываешь фронт работ.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://eduard-sukharev.github.io/komanda-v-legacy-proekte/&quot;&gt;Читать далее Пшерги кодинг →&lt;/a&gt;&lt;/p&gt;</content>
+</entry><entry><title>Обновление glibc и сломанные индексы PotgreSQL</title>
 <link href="https://eduard-sukharev.github.io/obnovlenie-glibc-i-slomannye-indeksy-potgresql/"/>
 <updated>2024-07-22T00:00:00Z</updated>
 <id>https://eduard-sukharev.github.io/obnovlenie-glibc-i-slomannye-indeksy-potgresql/</id><content type="html">&lt;p&gt;Если вы используете PosgtreSQL в качестве СУБД, то не спешите обновлять ваши сервера: можете получить на ровном месте очень нетривиальные к отслеживанию ошибки.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://eduard-sukharev.github.io/obnovlenie-glibc-i-slomannye-indeksy-potgresql/&quot;&gt;Читать далее Пшерги кодинг →&lt;/a&gt;&lt;/p&gt;</content>

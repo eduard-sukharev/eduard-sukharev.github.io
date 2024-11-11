@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Обновление glibc и сломанные индексы PotgreSQL - Пшерги кодинг</title>
 <meta property="og:title" content="Обновление glibc и сломанные индексы PotgreSQL - Пшерги кодинг">
-<link rel="stylesheet" href="/css/style.css?v=1721674915">
-<script src="/js/scripts.js?v=1721674915"></script>
+<link rel="stylesheet" href="/css/style.css?v=1731352264">
+<script src="/js/scripts.js?v=1731352264"></script>
 <script>
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('/service-worker.js');
 </script>
@@ -39,7 +39,7 @@
             "name": "Эдуард Сухарев"
         },
         "mainEntityOfPage": "https://eduard-sukharev.github.io/obnovlenie-glibc-i-slomannye-indeksy-potgresql/",
-        "datePublished": "2024-07-22T00:00:00.000Z",
+        "datePublished": "2024-11-11T00:00:00.000Z",
         "description": "Блог разработчика. Потому что правильные вещи нужно записывать."
     }
 </script>
@@ -123,13 +123,13 @@
   <div class="top-meta">
   <time>22 Jul 2024</time>
   <span class="separator">•</span>  
-  <span data-tooltip="249 words" class="tooltip-bottom reading-time">2 минут чтобы прочитать</span>
+  <span data-tooltip="238 words" class="tooltip-bottom reading-time">2 минут чтобы прочитать</span>
 </div>
   
   <p>Если вы используете PosgtreSQL в качестве СУБД, то не спешите обновлять ваши сервера: можете получить на ровном месте очень нетривиальные к отслеживанию ошибки.</p>
 <h2 id="obnovlenie-glibc">Обновление glibc</h2>
 <p>Один из самых важных компонент при обновлении ОС это пакет glibc, который используется почти всем софтом в системе.</p>
-<p>1 Августа 2018 года (вышла версия 2.28)[https://sourceware.org/legacy-ml/libc-alpha/2018-08/msg00003.html], в которой среди крупных изменений числится:</p>
+<p>1 Августа 2018 года <a href="https://sourceware.org/legacy-ml/libc-alpha/2018-08/msg00003.html">вышла версия 2.28</a>, в которой среди крупных изменений числится:</p>
 <blockquote>
 <p>The localization data for ISO 14651 is updated to match the 2016 Edition 4 release of the standard, this matches data provided by Unicode 9.0.0.  This update introduces significant improvements to the collation of Unicode characters.  This release deviates slightly from the standard in that the collation element ordering for lowercase and uppercase LATIN script characters is adjusted to ensure that regular expressions with ranges like [a-z] and [A-Z] don’t interleave e.g. A is not matched by [a-z].  With the update many locales have been updated to take advantage of the new collation information.  The new collation information has increased the size of the compiled locale archive or binary locales.</p>
 </blockquote>
@@ -333,6 +333,11 @@
 <div class="post-navigation">
   <ul>
     <li>
+      
+      <a href="/komanda-v-legacy-proekte/">
+        <span class="headline">← Статья поновее</span>
+        <span class="title">Команда в Legacy проекте</span>
+      </a>
       
     </li>
     <li>

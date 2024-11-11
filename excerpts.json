@@ -12,7 +12,12 @@
 ],
 "language": "ru",
 "icon" : "https://eduard-sukharev.github.io/icon-192.png",
-"favicon" : "https://eduard-sukharev.github.io/icon-512.png","items": [{"id": "https://eduard-sukharev.github.io/obnovlenie-glibc-i-slomannye-indeksy-potgresql/",
+"favicon" : "https://eduard-sukharev.github.io/icon-512.png","items": [{"id": "https://eduard-sukharev.github.io/komanda-v-legacy-proekte/",
+"url": "https://eduard-sukharev.github.io/komanda-v-legacy-proekte/",
+"title": "Команда в Legacy проекте",
+"date_published": "2024-11-11T00:00:00Z",
+"language": "","content_html": "&lt;p&gt;Иногда кажется, что проект небольшой и можно полностью переписать его за пару месяцев в одиночку. А иной раз руки просто опускаются когда оглядываешь фронт работ.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://eduard-sukharev.github.io/komanda-v-legacy-proekte/&quot;&gt;Читать далее Пшерги кодинг →&lt;/a&gt;&lt;/p&gt;"
+    },{"id": "https://eduard-sukharev.github.io/obnovlenie-glibc-i-slomannye-indeksy-potgresql/",
 "url": "https://eduard-sukharev.github.io/obnovlenie-glibc-i-slomannye-indeksy-potgresql/",
 "title": "Обновление glibc и сломанные индексы PotgreSQL",
 "date_published": "2024-07-22T00:00:00Z",
