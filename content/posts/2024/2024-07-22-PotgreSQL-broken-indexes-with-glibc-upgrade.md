@@ -17,7 +17,7 @@ image:
 
 Один из самых важных компонент при обновлении ОС это пакет glibc, который используется почти всем софтом в системе.
 
-1 Августа 2018 года (вышла версия 2.28)[https://sourceware.org/legacy-ml/libc-alpha/2018-08/msg00003.html], в которой среди крупных изменений числится:
+1 Августа 2018 года [вышла версия 2.28](https://sourceware.org/legacy-ml/libc-alpha/2018-08/msg00003.html), в которой среди крупных изменений числится:
 
 > The localization data for ISO 14651 is updated to match the 2016 Edition 4 release of the standard, this matches data provided by Unicode 9.0.0.  This update introduces significant improvements to the collation of Unicode characters.  This release deviates slightly from the standard in that the collation element ordering for lowercase and uppercase LATIN script characters is adjusted to ensure that regular expressions with ranges like [a-z] and [A-Z] don't interleave e.g. A is not matched by [a-z].  With the update many locales have been updated to take advantage of the new collation information.  The new collation information has increased the size of the compiled locale archive or binary locales.
 
